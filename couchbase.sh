@@ -13,13 +13,13 @@ dpkg -s php5-dev
 PHPDEV_IS_INSTALLED=$?
 
 if [ ${PEAR_IS_INSTALLED} -eq 1 ]; then
-        sudo apt-get -qq install php-pear
-    fi
-
-    if [ ${PHPDEV_IS_INSTALLED} -eq 1 ]; then
-        sudo apt-get -qq install php5-dev
-    fi
+  sudo apt-get -qq install php-pear
 fi
+
+if [ ${PHPDEV_IS_INSTALLED} -eq 1 ]; then
+  sudo apt-get -qq install php5-dev
+fi
+
 
 sudo apt-get install php-pear
 
