@@ -34,6 +34,5 @@ EOF
 # Add module to php
 sudo php5enmod http
 
-# Restart all the things
-sudo service nginx restart
+# Restart php
 sudo service php5-fpm restart
