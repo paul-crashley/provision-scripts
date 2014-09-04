@@ -1,19 +1,39 @@
 # Install libcouchbase
-wget -O/etc/apt/sources.list.d/couchbase.list http://packages.couchbase.com/ubuntu/couchbase-ubuntu1404.list
-wget -O- http://packages.couchbase.com/ubuntu/couchbase.key | sudo apt-key add -
+sudo wget -O/etc/apt/sources.list.d/couchbase.list http://packages.couchbase.com/ubuntu/couchbase-ubuntu1404.list
+sudo wget -O- http://packages.couchbase.com/ubuntu/couchbase.key | sudo apt-key add -
 
-apt-get update
-apt-get install libcouchbase2-libevent libcouchbase-dev
+sudo apt-get update
+sudo apt-get install libcouchbase2-libevent libcouchbase-dev
 
 # Install couchbase php extension
-apt-get install build-essential
-apt-get install php-pear
+dpkg -s php-pear
+PEAR_IS_INSTALLED=$?
 
-pecl install couchbase
+dpkg -s php5-dev
+PHPDEV_IS_INSTALLED=$?
+
+if [ ${PEAR_IS_INSTALLED} -eq 1 ]; then
+        sudo apt-get -qq install php-pear
+    fi
+
+    if [ ${PHPDEV_IS_INSTALLED} -eq 1 ]; then
+        sudo apt-get -qq install php5-dev
+    fi
+fi
+
+sudo apt-get install php-pear
+
+sudo pecl install couchbase
+
+sudo cat > /etc/php5/mods-available/couchbase.ini << EOF
+; configuration for php couchbase module
+; priority=30
+extension=couchbase.so
+EOF
 
 # Add module to php
-php5enmod http
+sudo php5enmod http
 
 # Restart all the things
-service nginx restart
-service php5-fpm restart
+sudo service nginx restart
+sudo service php5-fpm restart
